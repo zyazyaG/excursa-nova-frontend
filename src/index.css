@@ -1,13 +1,22 @@
-:root {
+/* Global Reset and Typography */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-size: 15px;
+  letter-spacing: 0.5px;
   font-weight: 400;
-
-  
-
-  font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
 
+  overflow-wrap: break-word;
+  overflow-x: hidden;
+  height: 100%;
+}

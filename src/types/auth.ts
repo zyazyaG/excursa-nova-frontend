@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 export interface AuthFormData {
     email: string;
     password: string;
@@ -6,9 +8,5 @@ export interface AuthFormData {
   
   export interface AuthResponse {
     token: string;
-    user: {
-      id: string;
-      email: string;
-      name: string;
-    };
+    user: User;
   }

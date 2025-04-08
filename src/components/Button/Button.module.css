@@ -2,17 +2,23 @@
     padding: 0.5rem 1rem;
     font-weight: 600;
     border-radius: 0.375rem;
+    border: none;
+    margin: 0.25rem;
     transition: background-color 0.2s ease-in-out;
   }
   
   .primary {
-    background-color: #2563eb;
+    background-color: #9790DA;
+    /* #2563eb; */
     color: white;
+    /* border: 2px solid #9790DA;   */
   }
   
   .secondary {
-    background-color: #FF6B6B;
+    background-color: #F4C10E;
+    /* #FF6B6B; */
     color: white;
+    /* border: 2px solid #F4C10E; */
   }
   
   .disabled {
