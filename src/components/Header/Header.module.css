@@ -44,4 +44,11 @@
     cursor: pointer;
     font-weight: 500;
   }
+
+  .avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+  }
   
