@@ -1,4 +1,3 @@
-import React from 'react'
 import { AuthResponse } from '../types/auth';
 
 export async function authApi(data: { email: string; password: string; name?: string }, type: string) {

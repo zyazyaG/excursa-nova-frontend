@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, CardHeader, Typography } from '@mui/material'
+import { Button, Card, CardActions, CardContent, Typography } from '@mui/material'
 import { Itinerary } from '../../types/itinerary';
 import MarkdownOutput from '../MarkdownOutput/MarkdownOutput';
 

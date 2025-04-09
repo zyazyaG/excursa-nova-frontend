@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { AuthFormData, AuthResponse } from "../../types/auth";
+import { AuthFormData } from "../../types/auth";
 import Button from "../Button/Button";
 import styles from "./AuthForm.module.css";
-import { authApi } from "../../api/authApi";
 
 interface AuthFormProps {
     type: "signup" | "signin";

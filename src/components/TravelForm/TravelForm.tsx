@@ -1,7 +1,6 @@
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
-import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { TravelPreferences } from "../../types/travel-preferences";
