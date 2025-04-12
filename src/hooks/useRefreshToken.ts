@@ -11,7 +11,7 @@ export const useRefreshToken = () => {
 
         setToken(response.data.token);
         setUser(response.data.user);
-        return response.data.token;
+        return (response.data.token, response.data.user);
     }
   return refresh;
   

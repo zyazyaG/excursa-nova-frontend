@@ -24,7 +24,7 @@ export const useAxios = () => {
                 const prevRequest = error?.config;
                 if (error?.response?.status === 401 && !prevRequest.sent) {
                     prevRequest.sent = true;
-                    const newToken = await refresh();
+                    const {newToken, user} = await refresh();
                     prevRequest.headers['Authorization'] = `Bearer ${newToken}`;
                     return axiosPrivate(prevRequest);
                 } else if (error?.response?.status === 403) {

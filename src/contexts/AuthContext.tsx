@@ -10,7 +10,7 @@ interface AuthContextType {
     setUser: (user: User | null) => void;
     setToken: (token: string | null) => void;
     signOut: () => void;
-    // loading: boolean;
+    loading: boolean;
     // setNewToken: (token: string |  null ) => void
     // signIn: (auth: AuthResponse) => void;
     // signOut: () => void;
@@ -34,25 +34,25 @@ export const AuthProvider = ({children} : {children:ReactNode}) => {
         window.location.href = "/sign-in";
     };
 
-    // useEffect(() => {
-    //     const tryRefresh = async () => {
-    //         try {
-    //             const res = await axiosBasic.post('auth/refresh', {token}, {withCredentials: true});
-    //             setToken(res.data.token);
-    //             setUser(res.data.user); // <-- make sure your /refresh endpoint returns user info
-    //         } catch (err) {
-    //             console.log("Silent refresh failed:", err);
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
+    useEffect(() => {
+        const tryRefresh = async () => {
+            try {
+                const res = await axiosBasic.get('auth/refresh', {withCredentials: true});
+                setToken(res.data.token);
+                setUser(res.data.user); // <-- make sure your /refresh endpoint returns user info
+            } catch (err) {
+                console.log("Silent refresh failed:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
     
-    //     tryRefresh();
-    // }, []);
+        tryRefresh();
+    }, []);
     
 
     return (
-        <AuthContext.Provider value={{user, setUser, token, setToken, signOut}}>
+        <AuthContext.Provider value={{user, setUser, token, setToken, signOut, loading}}>
             {children}
         </AuthContext.Provider>
     );
