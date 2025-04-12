@@ -8,10 +8,8 @@ interface PrivateRouteProps {
 
 export default function PrivateRoute({ children }: PrivateRouteProps) {
   const { user } = useAuth();
-
-  if (!user) {
-    return <Navigate to="/sign-in" replace />;
-  }
+  // if (loading) return <div>Loading...</div>;
+  if (!user) return <Navigate to="/sign-in" replace />;
 
   return <>{children}</>;
 }

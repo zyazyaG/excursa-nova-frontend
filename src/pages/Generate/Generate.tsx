@@ -11,7 +11,7 @@ export default function Generate() {
   const [itinerary, setItinerary] = useState("");
   const [data, setData] = useState<TravelPreferences>();
   const navigator = useNavigate();
-  const {setPendingItinerary, setPendingPreferences} = useAuth();
+  // const {setPendingItinerary, setPendingPreferences} = useAuth();
 
   const handleClick = () => {
     navigator("/sign-in");
@@ -32,8 +32,8 @@ export default function Generate() {
     if (itinerary) {
       // localStorage.setItem("pendingItinerary", itinerary);
       // localStorage.setItem("pendingPreferences", JSON.stringify(data));
-      setPendingItinerary(itinerary);
-      setPendingPreferences(data!);
+      // setPendingItinerary(itinerary);
+      // setPendingPreferences(data!);
     }
   }, [itinerary]);
 

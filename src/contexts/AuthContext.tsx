@@ -1,72 +1,59 @@
-import { createContext, useEffect, useState, ReactNode } from "react";
-import { AuthResponse } from "../types/auth";
+import { createContext, useState, ReactNode, useEffect } from "react";
 import { User } from "../types/user";
-import { saveStoredItinerary } from "../api/iterinaryApi";
-import { TravelPreferences } from "../types/travel-preferences";
+import { useRefreshToken } from "../hooks/useRefreshToken";
+import { axiosBasic } from "../api/axios";
+
 
 interface AuthContextType {
     user: User | null;
     token: string | null;
-    signIn: (auth: AuthResponse) => void;
+    setUser: (user: User | null) => void;
+    setToken: (token: string | null) => void;
     signOut: () => void;
-    pendingItinerary: string | null;
-    pendingPreferences: TravelPreferences | null;
-    setPendingPreferences: (prefs: TravelPreferences | null) => void;
-    setPendingItinerary: (itinerary: string | null) => void;
+    // loading: boolean;
+    // setNewToken: (token: string |  null ) => void
+    // signIn: (auth: AuthResponse) => void;
+    // signOut: () => void;
+    // pendingItinerary: string | null;
+    // pendingPreferences: TravelPreferences | null;
+    // setPendingPreferences: (prefs: TravelPreferences | null) => void;
+    // setPendingItinerary: (itinerary: string | null) => void;
+    // loading: boolean;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-export const AuthProvider = ({ children } : { children: ReactNode }) => {
+export const AuthProvider = ({children} : {children:ReactNode}) => {
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
-    const [pendingItinerary, setPendingItinerary] = useState<string | null>(null);
-    const [pendingPreferences, setPendingPreferences] = useState<TravelPreferences | null>(null);
-
-
-    useEffect(() => {
-        const storedToken = localStorage.getItem("token");
-        const storedUser = localStorage.getItem("user");
-        const storedPendingItinerary = localStorage.getItem("pendingItinerary");
-        const storedPendingPreferences = localStorage.getItem("pendingPreferences")
-        if (storedToken && storedUser && pendingItinerary) {
-            setToken(storedToken);
-            setUser(JSON.parse(storedUser));
-        }
-        if (storedPendingItinerary && storedPendingPreferences) {
-            setPendingItinerary(storedPendingItinerary);
-            setPendingPreferences(JSON.parse(storedPendingPreferences) as TravelPreferences);
-        }
-    }, []);
-
-    const signIn = async (auth: AuthResponse) => {
-        setToken(auth.token);
-        setUser(auth.user);
-        localStorage.setItem("token", auth.token);
-        localStorage.setItem("user", JSON.stringify(auth.user));
-        
-        if (pendingItinerary && pendingPreferences) {
-            try {
-                await saveStoredItinerary(pendingItinerary, pendingPreferences, auth.token);
-            } catch (err) {
-                console.error("Failed to save pending itinerary:", err);
-            } finally {
-                setPendingItinerary(null);
-                localStorage.removeItem("pendingItinerary");
-            }
-        }
-    };
+    const [loading, setLoading] = useState(true);
 
     const signOut = () => {
-        setToken(null);
         setUser(null);
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        setToken(null);
+        window.location.href = "/sign-in";
     };
 
+    // useEffect(() => {
+    //     const tryRefresh = async () => {
+    //         try {
+    //             const res = await axiosBasic.post('auth/refresh', {token}, {withCredentials: true});
+    //             setToken(res.data.token);
+    //             setUser(res.data.user); // <-- make sure your /refresh endpoint returns user info
+    //         } catch (err) {
+    //             console.log("Silent refresh failed:", err);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
+    
+    //     tryRefresh();
+    // }, []);
+    
+
     return (
-        <AuthContext.Provider value={{user, token, signIn, signOut, pendingItinerary, pendingPreferences, setPendingPreferences, setPendingItinerary}}>
-            { children }
+        <AuthContext.Provider value={{user, setUser, token, setToken, signOut}}>
+            {children}
         </AuthContext.Provider>
     );
-}
+};

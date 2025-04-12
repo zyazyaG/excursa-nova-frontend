@@ -1,6 +1,7 @@
 import { TravelPreferences } from "../types/travel-preferences";
 import { Itinerary } from "../types/itinerary";
 
+
 export async function generateIterinary(preferences:TravelPreferences) {
     
     const response = await fetch("http://localhost:3600/api/itineraries/generate-itinerary", {
@@ -36,18 +37,18 @@ export async function saveStoredItinerary(pendingItinerary: string, pendingPrefe
 
 };
 
-export async function getAllItineraries(token: string) {
-    const response = await fetch("http://localhost:3600/api/itineraries/", {
-        method: "GET",
-        headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "appliction/json"
-        }
-    });
+// export async function getAllItineraries(token: string) {
+//     const response = await fetch("http://localhost:3600/api/itineraries/", {
+//         method: "GET",
+//         headers: {
+//             "Authorization": `Bearer ${token}`,
+//             "Content-Type": "appliction/json"
+//         }
+//     });
 
-    if (!response.ok) {
-        throw new Error("Failed to fetch all itineraries!")
-    }
-    const data: Itinerary [] = await response.json();
-    return data;
-}
+//     if (!response.ok) {
+//         throw new Error("Failed to fetch all itineraries!")
+//     }
+//     const data: Itinerary [] = await response.json();
+//     return data;
+// }

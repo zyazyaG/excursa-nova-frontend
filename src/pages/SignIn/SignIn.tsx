@@ -6,7 +6,7 @@ import { AuthFormData } from "../../types/auth";
 import { useAuth } from "../../hooks/useAuth";
 
 export default function SignInPage() {
-  const { signIn } = useAuth();
+  const { setUser, setToken } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
   // const [loading, setLoading] = useState(false);
@@ -15,8 +15,10 @@ export default function SignInPage() {
     try {
       // setLoading(true);
       const response = await authApi(formData, "signin");
+      // const response = await signInApi(formData.email, formData.password);
       if (response) {
-        signIn(response);
+        setUser(response.user);
+        setToken(response.token);
         navigate("/dashboard");
       }
     } catch (err: any) {
