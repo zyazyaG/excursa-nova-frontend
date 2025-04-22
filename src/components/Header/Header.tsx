@@ -6,14 +6,17 @@ import { Avatar } from '@mui/material';
 
 export default function Header() {
     const navigate = useNavigate();
-    const { user, token } = useAuth();
+    const { user, token, signOut } = useAuth();
+
+
     
   return (
     <>
         <div className={styles.header}>
             <div className={styles.headerInner}>
                 <div className={styles.logo}>
-                    <Link to = "/">Logo</Link>
+                    {user && <Link to = "/dashboard">Logo</Link>}
+                    {!user && <Link to = "/">Logo</Link>}
                 </div>
                 <nav className={styles.nav}>
                     {token && (
@@ -21,6 +24,7 @@ export default function Header() {
                             <div className={styles.signed}>
                                 <Link to = "/dashboard">Dashboard</Link>
                                 <Link to = "/itineraries">Itineraries</Link>
+                                <Button variant='secondary' onClick={signOut}>Log Out</Button>
                                 <Avatar sx={{bgcolor: "#1F808D", width: 35, height: 35, mx: 1}}>{user?.name[0]}</Avatar>
                                 <p className={styles.avatar}>Hello, <br/>{user?.name}</p>
                                 

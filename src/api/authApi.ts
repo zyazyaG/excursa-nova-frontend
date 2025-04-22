@@ -13,6 +13,10 @@ export async function authApi(data: { email: string; password: string; name?: st
         body: JSON.stringify(data)
       });
 
+      if (response.status === 409) {
+        console.log("User already exists");
+      }
+
     if (response.ok) {
         const user:AuthResponse = await response.json();
         return user;

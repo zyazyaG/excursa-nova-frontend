@@ -7,7 +7,7 @@
   padding: 0;
 }
 
-body {
+html, body, #root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-size: 15px;
   letter-spacing: 0.5px;

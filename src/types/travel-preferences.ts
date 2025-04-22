@@ -4,4 +4,5 @@ export interface TravelPreferences {
     endDate?: Date;
     budget: number;
     style: string[];
+    cities: string [];
 }

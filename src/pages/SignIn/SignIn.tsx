@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { AuthFormData } from "../../types/auth";
 import { useAuth } from "../../hooks/useAuth";
+import { saveStoredItinerary } from "../../api/iterinaryApi";
+import { TravelPreferences } from "../../types/travel-preferences";
 
 export default function SignInPage() {
   const { setUser, setToken } = useAuth();
@@ -12,6 +14,8 @@ export default function SignInPage() {
   // const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (formData: AuthFormData) => {
+    const pendingItinerary = localStorage.getItem("pendingItinerary");
+    const pendingPreferences = localStorage.getItem("pendingPreferences")
     try {
       // setLoading(true);
       const response = await authApi(formData, "signin");
@@ -19,6 +23,11 @@ export default function SignInPage() {
       if (response) {
         setUser(response.user);
         setToken(response.token);
+        if (pendingItinerary && pendingPreferences) {
+          await saveStoredItinerary(pendingItinerary, JSON.parse(pendingPreferences) as TravelPreferences, response.token);
+          localStorage.removeItem("pendingItinerary");
+          localStorage.removeItem("pendingPreferences");
+        }
         navigate("/dashboard");
       }
     } catch (err: any) {

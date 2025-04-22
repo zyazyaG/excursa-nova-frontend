@@ -1,6 +1,5 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
 import { User } from "../types/user";
-import { useRefreshToken } from "../hooks/useRefreshToken";
 import { axiosBasic } from "../api/axios";
 
 
@@ -28,10 +27,22 @@ export const AuthProvider = ({children} : {children:ReactNode}) => {
     const [token, setToken] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
 
-    const signOut = () => {
-        setUser(null);
-        setToken(null);
-        window.location.href = "/sign-in";
+    const signOut = async () => {
+        try {
+            console.log("we are here");
+            await axiosBasic.get("auth/logout", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                withCredentials: true,
+            });
+        } catch (err) {
+            console.error("Logout failed:", err);
+        } finally {
+            setUser(null);
+            setToken(null);
+            window.location.href = "/sign-in";
+        }
     };
 
     useEffect(() => {

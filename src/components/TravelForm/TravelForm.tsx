@@ -2,6 +2,8 @@ import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import countryRegionData from 'country-region-data/data.json';
+import { useEffect, useState } from "react";
 
 import { TravelPreferences } from "../../types/travel-preferences";
 import Button from "../Button/Button";
@@ -28,12 +30,39 @@ export default function TravelForm({ onSubmit }: Props) {
     formState: { errors },
   } = useForm<TravelPreferences>();
 
+  const [countries, setCountries] = useState<OptionType[]>([]);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>();
+  const [showCitiesCheckmark, setShowCitiesCheckmark] = useState(false);
+  const [showCitiesDropdown, setShowCitiesDropdown] = useState(false);
+  const [regions, setRegions] = useState<OptionType[]>([]);
+
+  useEffect(() => {
+    const countryOptions: OptionType[] = countryRegionData.map((c) => ({
+      value: c.countryName,
+      label: c.countryName
+    }));
+    setCountries(countryOptions);
+  }, []);
+
+  useEffect(() => {
+    const regionsList:OptionType[] = countryRegionData
+    .find((c) => c.countryName === selectedCountry)
+    ?.regions.map((r) => ({
+      value: r.name,
+      label: r.name
+    })) || [];
+
+    setRegions(regionsList);
+  }, [selectedCountry])
+
   const handleFormSubmit = (data: any) => {
     const selectedStyles = (data.style as OptionType[]).map((opt) => opt.value);
+    const selectedCities = (data.cities as OptionType[] | undefined)?.map((opt) => opt.value) || [];
 
     const payload: TravelPreferences = {
       ...data,
       style: selectedStyles,
+      cities: selectedCities
     };
 
     onSubmit(payload);
@@ -42,11 +71,60 @@ export default function TravelForm({ onSubmit }: Props) {
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className={stylesCSS.form}>
       <label>Destination</label>
-      <input
+      {/* <input
         type="text"
         placeholder="Type your destination"
         {...register("destination", { required: true, minLength: 2 })}
+      /> */}
+      <Controller
+        control = {control}
+        name="destination"
+        render={({ field }) => (
+          <Select<OptionType>
+            options = {countries}
+            placeholder = "Select your Destination"
+            onChange = {(selected) => {
+              const country = selected?.value;
+              field.onChange(country);
+              setSelectedCountry(country);
+              setShowCitiesCheckmark(!!country);
+              setShowCitiesDropdown(false);
+            }}
+          />
+        )}
       />
+
+      {showCitiesCheckmark && (
+        <div style={{ marginTop: "10px" }}>
+          <label>
+            {" "}Do you want to specify the cities?
+            <input
+              type="checkbox"
+              onChange={(e) => setShowCitiesDropdown(e.target.checked)}
+            />
+            
+          </label>
+        </div>
+      )}
+
+    {showCitiesDropdown && selectedCountry && (
+      <div style={{ marginTop: "10px" }}>
+        <label>Regions</label>
+        <Controller
+          name="cities"
+          control={control}
+          render={({ field }) => (
+            <Select<OptionType, true>
+              isMulti
+              options={regions}
+              placeholder="Select Cities"
+              onChange={(selected) => field.onChange(selected)}
+            />
+          )}
+        />
+      </div>
+    )}
+    
 
       <label>Start Date</label>
       <Controller

@@ -4,29 +4,12 @@ import  Grid  from "@mui/material/Grid";
 import ItineraryCard from "../../components/Card/ItineraryCard";
 import { Itinerary } from "../../types/itinerary";
 import { useEffect, useState } from "react";
-import { useAuth } from "../../hooks/useAuth";
 import { useAxios } from "../../hooks/useAxios";
 
 export default function Itineraries() {
 
     const [itineraries, setItineraries] = useState<Itinerary[] | []>([]);
-    const { token } = useAuth();
     const axiosPrivate = useAxios();
-
-    // useEffect(() => {
-    //     const fetchItineraries = async () => {
-    //         if (!token) return;
-
-    //         try {
-    //             const data = await getAllItineraries(token);
-    //             setItineraries(data);
-    //         } catch (err) {
-    //             console.error("Failed to load itineraries:", err);
-    //         }
-    //     };
-
-    //     fetchItineraries();
-    // }, [token]);
 
     useEffect(() => {
         let isMounted = true;
@@ -51,18 +34,6 @@ export default function Itineraries() {
         }
 
     }, [])
-
-
-    const Item = styled(Paper)(({ theme }) => ({
-        backgroundColor: '#fff',
-        ...theme.typography.body2,
-        padding: theme.spacing(1),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-        ...theme.applyStyles('dark', {
-          backgroundColor: '#1A2027',
-        }),
-      }));
 
     return (
         <div>

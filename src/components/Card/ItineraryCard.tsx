@@ -24,7 +24,7 @@ import { formatDate } from '../../utils';
                 <Typography variant="body2" color="text.secondary" gutterBottom>
                     {formatDate(itinerary.startDate)} → {formatDate(itinerary.endDate)}
                 </Typography>
-                <div style={{ marginTop: '0.5rem' }}><MarkdownOutput markdown={`${itinerary.content.substring(0, 100)}...`}/></div>
+                <div style={{ marginTop: '0.5rem' }}><MarkdownOutput markdown={`${itinerary.content.substring(0, 70)}...`}/></div>
             </CardContent>
             <CardActions>
                 <Button size="small" onClick={() => {}}>
