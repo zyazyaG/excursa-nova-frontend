@@ -4,10 +4,13 @@
   left: 0;
   width: 100%;
   z-index: 10; 
-  /* background-color: rgba(234, 234, 227);  */
   background-color: transparent;
+  transition: background-color 0.3s ease;
   color: #14343B;
   padding: 0.5rem 1rem;
+}
+.scrolled {
+  background-color: #8fc1e3;
 }
 .headerInner {
     display: flex;

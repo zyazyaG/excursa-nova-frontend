@@ -7,12 +7,14 @@ import Button from "../../components/Button/Button";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
 import { useAxios } from "../../hooks/useAxios";
+import styles from "./Generate.module.css";
 
 
 export default function Generate() {
   
   const [itinerary, setItinerary] = useState("");
   const [data, setData] = useState<TravelPreferences>();
+  const [loading, setLoading] = useState(false);
   const navigator = useNavigate();
   const {user} = useAuth();
   const axiosPrivate = useAxios();
@@ -35,6 +37,7 @@ export default function Generate() {
 
   const handleFormSubmit = async (data: TravelPreferences) => {
     try {
+      setLoading(true);
       if (data.cities.length) {
         data.destination = data.destination + ": "  + data.cities.map((city) => city).join(', ');
       }
@@ -43,6 +46,9 @@ export default function Generate() {
       setData(data);
     } catch (error) {
       console.log("Failed ---", error);
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -56,32 +62,33 @@ export default function Generate() {
   }, [itinerary]);
 
   return (
-    <div>
-      <div className="header">
-        <h3>Fill out form</h3>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h3>Smarter travel starts with this form.</h3>
+        <p>Answer a few and take off soon.</p>
       </div>
 
-      <div className="form">
-        <TravelForm onSubmit={handleFormSubmit} />
-        {itinerary && 
-          (     
-            <div>
-              <MarkdownOutput markdown={itinerary} />
-            </div>
-          )}
-        
+      <div className={styles.form}>
+        <TravelForm onSubmit={handleFormSubmit} loading={loading} />   
       </div>
-      <div>
-        {itinerary && !user && (
-          <div>
-            <h4>Would you want to save the Trip?</h4>
-            <Button variant="primary" onClick={() => navigator("/sign-up")} style={{ marginTop: "15px" }}>Sign Up</Button></div>
-        )}
-        {itinerary && user && (
-          <div>
-            <Button variant="primary" onClick={() => handleClick()} style={{ marginTop: "15px" }}>Save Itinearary</Button>
-          </div>
-        )}
+      
+      <div className={styles.itinerary}>
+        {itinerary && 
+            (   
+              <div className={styles.itineraryContainer}>
+                <div className={styles.links}>
+                  <h4 className={styles.hOne}>Like your Trip?</h4><h4 className={styles.hTwo}> Then don't forget to Save it!</h4>
+                  {user 
+                    ? <Button variant="primary" onClick={() => handleClick()} style={{height: "40px"}}>Save Itinearary</Button> 
+                    : <Button variant="primary" onClick={() => navigator("/sign-up")} style={{height: "40px"}}>Sign Up</Button> }
+               
+                </div>
+                <div className={styles.markdown}>
+                  <MarkdownOutput markdown={itinerary} />
+                </div>
+              </div>  
+              
+            )}
       </div>
     </div>
   );

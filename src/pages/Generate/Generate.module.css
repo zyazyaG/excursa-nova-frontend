@@ -1,4 +1,85 @@
+.container {
+    position: relative;
+    height:auto;
+    min-height: 600px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #F7F9FB;
+    align-items: center;
+    justify-content: flex-start;
+    /* padding: 4rem 5rem 4rem 5rem; */
+}
+
+.header {
+    color: #31708E;
+    margin: 6rem 0 2rem 0;;
+    justify-items: center;
+}
+
+.header h3 {
+    font-size: 3rem; 
+    margin-bottom: 1.2rem;
+}
+.header p {
+    font-size: 1.5rem;
+}
+
 .form {
+    width: 100%;
+    justify-items: center;
+    border-radius: 25px;
+    margin-bottom: 2rem;
+    /* border: 2px solid #8FC1E3; */
+}
+
+.itinerary {
+    width: 100%;
+    margin: 1rem 1rem 0 1rem;
+    /* border: 2px solid #5085a5;
+    border-radius: 1%; */
+    background-color: #5085a5;
+}
+
+.itineraryContainer {
+    width: 100%;
+    justify-items: center;
+    padding-top: 30px;
+}
+
+.links {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 18px;
+}
+
+.hOne {
+    color: #F7F9FB;
+    margin: 0 1rem 0 0;
+}
+
+.hTwo {
+    color: #F4C10E;
+    margin: 0 1rem 0 0;
+    font-size: 20px;
+}
+
+
+
+.markdown {
+    justify-self: center;
+    background-color: #F7F9FB;
+    border-radius: 20px;
+    margin: 2rem;
+    color: black;
+    width: 60%;
+    padding: 2rem;
+}
+
+
+
+/* .form {
     display: flex;
     flex-direction: column;
     width: 50%;
@@ -12,4 +93,4 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-}
+} */

@@ -3,16 +3,34 @@ import styles from "./Header.module.css";
 import Button from '../Button/Button';
 import { useAuth } from '../../hooks/useAuth';
 import { Avatar } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 export default function Header() {
     const navigate = useNavigate();
     const { user, token, signOut } = useAuth();
+    const [scrolled, setScrolled] = useState(false);
+
+
+
+    useEffect(() => {
+        const trigger = document.getElementById("header-trigger");
+        const observer = new IntersectionObserver(
+          ([entry]) => setScrolled(!entry.isIntersecting),
+          { threshold: 0 }
+        );
+      
+        if (trigger) observer.observe(trigger);
+      
+        return () => {
+          if (trigger) observer.unobserve(trigger);
+        };
+      }, []);
 
 
     
   return (
     <>
-        <div className={styles.header}>
+        <div className={`${styles.header} ${scrolled ? styles.scrolled : ""}`}>
             <div className={styles.headerInner}>
                 <div className={styles.logo}>
                     {user && <Link to = "/dashboard">Logo</Link>}

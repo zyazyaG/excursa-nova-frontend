@@ -3,3 +3,22 @@
     flex-direction: column;
     width: 50%;
 }
+
+.label {
+    font-size: 16px;
+    /* padding: 5px 0 5px 0; */
+    color: #687864;
+    /* font-weight: bold; */
+}
+
+.checkmark {
+    /* margin: 15px 0 15px 0; */
+    font-size: 18px;
+    color: #687864;
+    font-weight: bold;
+}
+
+.form input {
+    border: 1 solid #8FC1E3;
+    /* height: 40px; */
+}

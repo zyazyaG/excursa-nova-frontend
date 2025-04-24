@@ -12,6 +12,7 @@ function App() {
   return (
     <BrowserRouter>
     <Header />
+    <div id="header-trigger" style={{ height: "1px", position: "relative", top: 0 }} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/generate" element={<Generate />} />

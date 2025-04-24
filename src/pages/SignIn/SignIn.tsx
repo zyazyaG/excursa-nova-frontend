@@ -38,7 +38,7 @@ export default function SignInPage() {
   };
 
   return (
-    <div>
+    <div style={{margin: "100px"}}>
       <AuthForm type="signin" onSubmit={handleSubmit} error={error} />
     </div>
   );
