@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Itinerary } from "../../types/itinerary";
 import ItineraryCard from "../../components/Card/ItineraryCard";
 import { useAxios } from "../../hooks/useAxios";
+import styles from "./Dashboard.module.css";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -38,18 +39,18 @@ export default function Dashboard() {
 }, [])
 
   return (
-    <div>
-      <div>
-        <div>
+    <div className={styles.container}>
+      <div className={styles.inner}>
+        <div className={styles.header}>
           <h3>Welcome, {user?.name}</h3>
         </div>
-        <div>
-          <Box>
+
+          <Box className={styles.generate}>
             <p>Ready to plan your next adventure?</p>
-            <Button variant="primary" onClick={() => navigator("/generate")}>Generate New Trip</Button>
+            <Button variant="primary" onClick={() => navigator("/generate")} style={{marginLeft:"1rem"}}>Generate New Trip</Button>
           </Box>
-        </div>
-        <div>
+
+        <div className={styles.itineraries}>
           <h3>Your Recent Trips</h3>
           <Box>
           {itineraries?.length ? 

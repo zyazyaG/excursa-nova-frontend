@@ -27,40 +27,43 @@ export default function AuthForm({ type, onSubmit, error }: AuthFormProps) {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div className={styles.form}>
-                <div>
-                    <label>Email: </label>
+        <form onSubmit={handleSubmit} className={styles.form} >
+            <div className={styles.formContainer}>
+                <div className={styles.email}>
                     <input 
                         type="email"
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
+                        placeholder="Email"
+                        className={styles.input}
                         required />
                 </div>
-                <div>
-                    <label>Password: </label>
+                <div className={styles.password}>
                     <input 
                         type="password"
                         name="password"
                         value={formData.password}
                         onChange={handleChange}
+                        placeholder="Password"
+                        className={styles.input}
                         required />
                 </div>
                 {type === "signup" && 
-                    <div>
-                        <label>Name </label>
+                    <div className={styles.name}>
                         <input 
                             type="name"
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
+                            placeholder="Name"
+                            className={styles.input}
                             required />
                     </div>
                 }
 
                 {error  && <p>{error}</p>}
-                <Button variant="primary" type="submit" style={{ marginTop: "15px", width: "150px" }}>{type === "signup" ? "Create Account" : "Sing In"}</Button>
+                <Button variant="primary" type="submit" style={{ marginTop: "15px", width: "200px", height: "40px" }}>{type === "signup" ? "Create Account" : "Sing In"}</Button>
             </div>
         </form>
     );

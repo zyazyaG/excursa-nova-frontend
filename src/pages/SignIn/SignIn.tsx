@@ -6,6 +6,8 @@ import { AuthFormData } from "../../types/auth";
 import { useAuth } from "../../hooks/useAuth";
 import { saveStoredItinerary } from "../../api/iterinaryApi";
 import { TravelPreferences } from "../../types/travel-preferences";
+import styles from "./SignIn.module.css";
+import Button from "../../components/Button/Button";
 
 export default function SignInPage() {
   const { setUser, setToken } = useAuth();
@@ -38,8 +40,19 @@ export default function SignInPage() {
   };
 
   return (
-    <div style={{margin: "100px"}}>
-      <AuthForm type="signin" onSubmit={handleSubmit} error={error} />
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h3>Back for another adventure?</h3>
+        <p>Sign in to continue your journey.</p>
+      </div>
+      <div className={styles.authForm}>
+        <AuthForm type="signin" onSubmit={handleSubmit} error={error} />
+      </div> 
+
+      <div className={styles.signIn}>
+        <h4>New here? Let's get you started!</h4>
+        <Button variant="secondary" style={{ marginTop: "15px", width: "200px", height: "40px" }} onClick={() => navigate("/sign-up")}>Sign In</Button>
+      </div>
     </div>
   );
 }

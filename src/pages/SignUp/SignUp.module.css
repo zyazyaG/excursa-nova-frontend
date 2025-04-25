@@ -1,0 +1,36 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: #2A6F97;
+    padding: 6rem;
+}
+
+.header {
+    padding: 3rem;
+    color: white;
+    justify-items: center;
+}
+.header h3{
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.header p {
+    font-size: 1.5rem;
+}
+
+.authForm {
+    width: 70%;
+    justify-items: center;
+}
+
+.signIn {
+    margin: 4rem 0 0 0;
+    color: white;
+    justify-items: center;
+}
+
+

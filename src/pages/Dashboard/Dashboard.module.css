@@ -1,0 +1,47 @@
+.container {
+    width: 100%;
+    height: 100%;
+    padding: 4rem 2rem 4rem 2rem;
+    background-color: #F7F9FB;
+}
+
+.inner {
+    width: 100%;
+    display: flex;
+    height: auto;
+    flex-direction: column;
+}
+
+.header {
+    margin-top: 1rem;
+    font-size: 3rem;
+    color: #013A63;
+}
+
+.generate {
+    display: flex;
+    flex-direction: row;
+    margin: 1rem 0 1rem 0;
+}
+
+.generate p {
+    font-size: 1.2rem;
+    padding: 0.5rem 0 1rem 0;
+}
+
+.itineraries {
+    display: flex;
+    flex-direction: column;
+    min-height: 500px;
+    background-color: #2A6F97;
+    border-radius: 20px;
+    padding: 1rem;
+}
+
+.itineraries h3 {
+    font-size: 2rem;
+    color: white;
+    margin: 0.5rem 0 1rem 0;
+}
+
+

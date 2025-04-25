@@ -6,6 +6,8 @@ import { useAuth } from "../../hooks/useAuth";
 import { AuthFormData } from "../../types/auth";
 import { saveStoredItinerary } from "../../api/iterinaryApi";
 import { TravelPreferences } from "../../types/travel-preferences";
+import styles from "./SignUp.module.css";
+import Button from "../../components/Button/Button";
 
 export default function SignUpPage() {
   const { setUser, setToken } = useAuth();
@@ -34,8 +36,19 @@ export default function SignUpPage() {
   };
 
   return (
-    <div>
-      <AuthForm type="signup" onSubmit={handleSubmit} error={error} />
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h3>Create Your Account</h3>
+        <p>Let's plan your next adventure together</p>
+      </div>
+      <div className={styles.authForm}>
+        <AuthForm type="signup" onSubmit={handleSubmit} error={error} />
+      </div> 
+
+      <div className={styles.signIn}>
+        <h4>Signed up already? Let's log you in!</h4>
+        <Button variant="secondary" style={{ marginTop: "15px", width: "200px", height: "40px" }} onClick={() => navigate("/sign-in")}>Sign In</Button>
+      </div>
     </div>
   );
 }
