@@ -6,6 +6,7 @@ export interface Itinerary {
     startDate?: Date;
     endDate?: Date;
     createdAt: string;
+    imgURL: string[];
 }
 
 export interface FilterObject {
