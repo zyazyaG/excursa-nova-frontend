@@ -1,0 +1,70 @@
+import { Checkbox, Drawer } from "@mui/material";
+import Button from "../Button/Button";
+import { FilterObject, Itinerary } from "../../types/itinerary";
+import { useEffect, useState } from "react";
+import styles from "./Sidebar.module.css";
+import { grey, yellow } from "@mui/material/colors";
+
+type Props  = {
+    isOpen: boolean;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    filters: FilterObject;
+    setFilters: React.Dispatch<React.SetStateAction<FilterObject>>;
+    itineraries: Itinerary [];
+
+}
+
+const Sidebar = ({ isOpen, setIsOpen, filters, setFilters, itineraries }: Props) => {
+    const [destinations, setDestinations] = useState<string[]>([]);
+
+    useEffect(() => {
+        console.log(itineraries)
+
+        const destinationsList: string [] = itineraries.map(i => (i.destination));
+        console.log(destinationsList);
+        setDestinations(destinationsList);
+        console.log(destinations);
+
+    }, [itineraries])
+
+    return (
+        <Drawer variant="persistent" hideBackdrop={true} open={isOpen} >
+            <div className={styles.container}>
+                <div className={styles.header}>
+                    <h4>Filter or Sort</h4>
+                    <Button variant="secondary" onClick={() => setIsOpen(false)}>X</Button>
+                </div>
+                <div className={styles.filtersGrid}>
+                    <div className={styles.destination}>
+                        <h4>Destination</h4>
+                        {destinations.map((d, k) => (
+                            <div key={k} className={styles.gridItem}>
+                                <Checkbox 
+                                    sx={{
+                                        color: grey[100],
+                                        '&.Mui-checked': {
+                                            color: yellow[500],
+                                        },
+                                    }}
+                                    onChange={(e) => {
+                                        setFilters((prev) => ({
+                                            ...prev,
+                                            destination: e.target.checked
+                                            ? [...prev.destination, d]
+                                            : prev.destination.filter((dest) => dest !== d)
+                                        }));
+                                    }}
+                                />
+                                <p>{d}</p>
+                            </div>
+                    ))}
+
+                    </div>
+                </div>
+            </div>
+
+        </Drawer>
+
+    )
+}
+export default Sidebar;

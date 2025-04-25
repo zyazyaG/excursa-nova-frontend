@@ -19,7 +19,7 @@ import { formatDate } from '../../utils';
         <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h5" gutterBottom>
-                    {itinerary.destination || 'Untitled Trip'}
+                    {itinerary.name || itinerary.destination || 'Untitled Trip'}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" gutterBottom>
                     {formatDate(itinerary.startDate)} → {formatDate(itinerary.endDate)}

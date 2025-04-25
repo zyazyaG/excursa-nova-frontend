@@ -1,0 +1,36 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    background-color: #b23850;
+    height: 100%;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    margin: 1rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h4 {
+    font-size: 24px;
+    color: white;
+}
+
+.filtersGrid {
+    margin-left: 1rem;
+    color: white;
+
+}
+
+.gridItem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: white;
+}
+
+
+
