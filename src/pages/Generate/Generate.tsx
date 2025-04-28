@@ -25,6 +25,7 @@ export default function Generate() {
     const payload = {...data, content: itinerary};
 
     try {
+      setLoading(true);
       const response = await axiosPrivate.post("/itineraries", payload, {signal: controller.signal});
       
       console.log(response.data);
@@ -33,6 +34,7 @@ export default function Generate() {
       console.log(error);
     }
     controller.abort();
+    setLoading(false);
   }
 
   const handleFormSubmit = async (data: TravelPreferences) => {
@@ -79,7 +81,7 @@ export default function Generate() {
                 <div className={styles.links}>
                   <h4 className={styles.hOne}>Like your Trip?</h4><h4 className={styles.hTwo}> Then don't forget to Save it!</h4>
                   {user 
-                    ? <Button variant="primary" onClick={() => handleClick()} style={{height: "40px"}}>Save Itinearary</Button> 
+                    ? <Button variant="primary" onClick={() => handleClick()} style={{height: "40px"}} disabled={loading}>Save Itinearary</Button> 
                     : <Button variant="primary" onClick={() => navigator("/sign-up")} style={{height: "40px"}}>Sign Up</Button> }
                
                 </div>

@@ -51,7 +51,7 @@ export default function Itineraries() {
         return itineraries.filter(itinerary => {
             return ((itinerary.destination && itinerary.destination.toLocaleLowerCase().indexOf(filterObj.searchString.toLocaleLowerCase())> -1) ||
             (itinerary.name && itinerary.name.toLocaleLowerCase().indexOf(filterObj.searchString.toLocaleLowerCase())> -1)) &&
-            (filterObj.destination.length > 0 ? filterObj.destination.includes(itinerary.destination) : true);
+            (filterObj.destination.length > 0 ? filterObj.destination.includes(itinerary.destination.split(":")[0]) : true);
         })
 
     }
@@ -67,7 +67,7 @@ export default function Itineraries() {
         <div className={styles.container}>
             <div className={styles.inner}>
                 <div className={styles.filterSearch}>
-                    <Button variant="primary" onClick={() => setIsOpen(true)} style={{height: "55px", marginRight:"10px"}}>Side</Button>
+                    <Button variant="primary" onClick={() => setIsOpen(true)} style={{height: "55px", marginRight:"10px"}}>Filter Sort</Button>
                     <TextField 
                         id="outlined-basic"
                         variant="outlined"

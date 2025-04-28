@@ -20,9 +20,9 @@ const Sidebar = ({ isOpen, setIsOpen, filters, setFilters, itineraries }: Props)
     useEffect(() => {
         console.log(itineraries)
 
-        const destinationsList: string [] = itineraries.map(i => (i.destination));
-        console.log(destinationsList);
-        setDestinations(destinationsList);
+        const destinationsList: string [] = itineraries.map(i => (i.destination.split(":")[0]));
+        const uniqueDestinations = Array.from(new Set(destinationsList));
+        setDestinations(uniqueDestinations);
         console.log(destinations);
 
     }, [itineraries])
