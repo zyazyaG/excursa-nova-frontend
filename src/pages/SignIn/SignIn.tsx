@@ -51,7 +51,7 @@ export default function SignInPage() {
 
       <div className={styles.signIn}>
         <h4>New here? Let's get you started!</h4>
-        <Button variant="secondary" style={{ marginTop: "15px", width: "200px", height: "40px" }} onClick={() => navigate("/sign-up")}>Sign In</Button>
+        <Button variant="secondary" style={{ marginTop: "15px", width: "200px", height: "40px" }} onClick={() => navigate("/sign-up")}>Sign Up</Button>
       </div>
     </div>
   );

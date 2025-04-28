@@ -10,57 +10,46 @@ export default function Header() {
     const { user, token, signOut } = useAuth();
     const [scrolled, setScrolled] = useState(false);
 
-
-
     useEffect(() => {
-        const trigger = document.getElementById("header-trigger");
-        const observer = new IntersectionObserver(
-          ([entry]) => setScrolled(!entry.isIntersecting),
-          { threshold: 0 }
-        );
-      
-        if (trigger) observer.observe(trigger);
-      
-        return () => {
-          if (trigger) observer.unobserve(trigger);
+        console.log("here")
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 60);
         };
-      }, []);
 
+        window.addEventListener('scroll', handleScroll);
+        
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
-    
   return (
     <>
         <div className={`${styles.header} ${scrolled ? styles.scrolled : ""}`}>
             <div className={styles.headerInner}>
                 <div className={styles.logo}>
-                    {user && <Link to = "/dashboard">Logo</Link>}
-                    {!user && <Link to = "/">Logo</Link>}
+                    {user ? <Link to="/dashboard">Logo</Link> : <Link to="/">Logo</Link>}
                 </div>
                 <nav className={styles.nav}>
-                    {token && (
+                    {token ? (
+                        <div className={styles.signed}>
+                            <Link to="/dashboard">Dashboard</Link>
+                            <Link to="/itineraries">Itineraries</Link>
+                            <Button variant="secondary" onClick={signOut}>Log Out</Button>
+                            <Avatar sx={{ bgcolor: "#1F808D", width: 35, height: 35, mx: 1 }}>
+                                {user?.name[0]}
+                            </Avatar>
+                            <p className={styles.avatar}>Hello, <br />{user?.name}</p>
+                        </div>
+                    ) : (
                         <>
-                            <div className={styles.signed}>
-                                <Link to = "/dashboard">Dashboard</Link>
-                                <Link to = "/itineraries">Itineraries</Link>
-                                <Button variant='secondary' onClick={signOut}>Log Out</Button>
-                                <Avatar sx={{bgcolor: "#1F808D", width: 35, height: 35, mx: 1}}>{user?.name[0]}</Avatar>
-                                <p className={styles.avatar}>Hello, <br/>{user?.name}</p>
-                                
-                            </div>
-                        </>
-                    )}
-
-                    {!token && (
-                        <>
-                            <Button variant='primary' onClick={() => navigate("/sign-up")}>Sign Up</Button>
-                            <Button variant='secondary' onClick={() => navigate("/sign-in")}>Sign In</Button>
-                            {/* <Link to = "/sign-in">Sign In</Link>
-                            <Link to = "/sign-up">Sign Up</Link> */}
+                            <Button variant="primary" onClick={() => navigate("/sign-up")}>Sign Up</Button>
+                            <Button variant="secondary" onClick={() => navigate("/sign-in")}>Sign In</Button>
                         </>
                     )}
                 </nav>
             </div>
         </div>
     </>
-  )
+  );
 }

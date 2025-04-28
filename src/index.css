@@ -17,6 +17,6 @@ html, body, #root {
   -moz-osx-font-smoothing: grayscale;
 
   overflow-wrap: break-word;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   height: 100%;
 }
