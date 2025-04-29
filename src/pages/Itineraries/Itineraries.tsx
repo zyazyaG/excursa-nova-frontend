@@ -53,6 +53,16 @@ export default function Itineraries() {
             (itinerary.name && itinerary.name.toLocaleLowerCase().indexOf(filterObj.searchString.toLocaleLowerCase())> -1)) &&
             (filterObj.destination.length > 0 ? filterObj.destination.includes(itinerary.destination.split(":")[0]) : true);
         })
+        .sort((a: Itinerary, b: Itinerary) => {
+            const dateA = new Date(a.startDate!).getTime();
+            const dateB = new Date(b.startDate!).getTime();
+            if (filterObj.sort === "desc") {
+                return dateB - dateA;
+            } else {
+                return dateA - dateB;
+            }
+            return 0;
+        })
 
     }
 

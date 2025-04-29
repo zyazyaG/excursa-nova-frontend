@@ -17,6 +17,20 @@ type Props  = {
 const Sidebar = ({ isOpen, setIsOpen, filters, setFilters, itineraries }: Props) => {
     const [destinations, setDestinations] = useState<string[]>([]);
 
+    const handleSort = (sort: string) => {
+        if (sort === "acs") {
+            setFilters((prev) => ({
+                ...prev,
+                sort: "acs"
+            }))
+        } else {
+            setFilters((prev) => ({
+                ...prev,
+                sort: "desc"
+            }))
+        }
+    }
+
     useEffect(() => {
         console.log(itineraries)
 
@@ -59,6 +73,12 @@ const Sidebar = ({ isOpen, setIsOpen, filters, setFilters, itineraries }: Props)
                             </div>
                     ))}
 
+                    </div>
+                    <div className={styles.date}>
+                        <h4>Sort By</h4>
+                        <Button style={{backgroundColor:"#8fc1e3"}} onClick={() => handleSort("acs")}>Start Date - Oldest to Newest</Button>
+                        <Button style={{backgroundColor:"#8fc1e3"}} onClick={() => handleSort("desc")}>Start Date - Newest to Oldest</Button>
+                        
                     </div>
                 </div>
             </div>
