@@ -10,14 +10,7 @@ interface AuthContextType {
     setToken: (token: string | null) => void;
     signOut: () => void;
     loading: boolean;
-    // setNewToken: (token: string |  null ) => void
-    // signIn: (auth: AuthResponse) => void;
-    // signOut: () => void;
-    // pendingItinerary: string | null;
-    // pendingPreferences: TravelPreferences | null;
-    // setPendingPreferences: (prefs: TravelPreferences | null) => void;
-    // setPendingItinerary: (itinerary: string | null) => void;
-    // loading: boolean;
+
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -50,7 +43,7 @@ export const AuthProvider = ({children} : {children:ReactNode}) => {
             try {
                 const res = await axiosBasic.get('auth/refresh', {withCredentials: true});
                 setToken(res.data.token);
-                setUser(res.data.user); // <-- make sure your /refresh endpoint returns user info
+                setUser(res.data.user); 
             } catch (err) {
                 console.log("Silent refresh failed:", err);
             } finally {

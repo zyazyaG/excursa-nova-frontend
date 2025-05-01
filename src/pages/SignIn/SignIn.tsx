@@ -4,29 +4,30 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { AuthFormData } from "../../types/auth";
 import { useAuth } from "../../hooks/useAuth";
-import { saveStoredItinerary } from "../../api/iterinaryApi";
-import { TravelPreferences } from "../../types/travel-preferences";
 import styles from "./SignIn.module.css";
 import Button from "../../components/Button/Button";
+import { useAxios } from "../../hooks/useAxios";
 
 export default function SignInPage() {
   const { setUser, setToken } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
-  // const [loading, setLoading] = useState(false);
+  const axiosPrivate = useAxios();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (formData: AuthFormData) => {
     const pendingItinerary = localStorage.getItem("pendingItinerary");
-    const pendingPreferences = localStorage.getItem("pendingPreferences")
+    const pendingPreferences = localStorage.getItem("pendingPreferences");
+    const controller = new AbortController();
     try {
-      // setLoading(true);
+      setLoading(true);
       const response = await authApi(formData, "signin");
-      // const response = await signInApi(formData.email, formData.password);
       if (response) {
         setUser(response.user);
         setToken(response.token);
         if (pendingItinerary && pendingPreferences) {
-          await saveStoredItinerary(pendingItinerary, JSON.parse(pendingPreferences) as TravelPreferences, response.token);
+          const payload = {pendingPreferences, content: pendingItinerary};
+          await axiosPrivate.post("/itineraries", payload, {signal: controller.signal});
           localStorage.removeItem("pendingItinerary");
           localStorage.removeItem("pendingPreferences");
         }
@@ -35,8 +36,10 @@ export default function SignInPage() {
     } catch (err: any) {
       setError(err.message || "Signin failed.");
     } finally {
-      // setLoading(false);
+      controller.abort();
+      setLoading(false);
     }
+
   };
 
   return (
@@ -46,7 +49,7 @@ export default function SignInPage() {
         <p>Sign in to continue your journey.</p>
       </div>
       <div className={styles.authForm}>
-        <AuthForm type="signin" onSubmit={handleSubmit} error={error} />
+        <AuthForm type="signin" onSubmit={handleSubmit} error={error} loading = {loading} />
       </div> 
 
       <div className={styles.signIn}>

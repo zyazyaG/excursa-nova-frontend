@@ -2,7 +2,7 @@ import styles from './Button.module.css';
 
 
 type ButtonProps = {
-    variant?: 'primary' | 'secondary';
+    variant?: 'primary' | 'secondary' | "third";
     style?:React.CSSProperties;
     children: React.ReactNode;
     className?: string;

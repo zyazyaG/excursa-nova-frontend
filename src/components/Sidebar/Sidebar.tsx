@@ -46,7 +46,7 @@ const Sidebar = ({ isOpen, setIsOpen, filters, setFilters, itineraries }: Props)
             <div className={styles.container}>
                 <div className={styles.header}>
                     <h4>Filter or Sort</h4>
-                    <Button variant="secondary" onClick={() => setIsOpen(false)}>X</Button>
+                    <Button style={{fontSize: "18px"}} onClick={() => setIsOpen(false)}>x</Button>
                 </div>
                 <div className={styles.filtersGrid}>
                     <div className={styles.destination}>
@@ -76,7 +76,7 @@ const Sidebar = ({ isOpen, setIsOpen, filters, setFilters, itineraries }: Props)
                     </div>
                     <div className={styles.date}>
                         <h4>Sort By</h4>
-                        <Button style={{backgroundColor:"#8fc1e3"}} onClick={() => handleSort("acs")}>Start Date - Oldest to Newest</Button>
+                        <Button style={{backgroundColor:"#8fc1e3", marginTop:"1rem"}} onClick={() => handleSort("acs")}>Start Date - Oldest to Newest</Button>
                         <Button style={{backgroundColor:"#8fc1e3"}} onClick={() => handleSort("desc")}>Start Date - Newest to Oldest</Button>
                         
                     </div>

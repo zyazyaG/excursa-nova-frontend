@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard/Dashboard'
 import PrivateRoute from './components/PrivateRoute';
 import Header from './components/Header/Header';
 import Itineraries from './pages/Itineraries/Itineraries';
+import { ItitneraryPage } from './pages/Ititnerary/ItitneraryPage';
 
 function App() {
   return (
@@ -30,6 +31,14 @@ function App() {
           element={
             <PrivateRoute>
               <Itineraries />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/itineraries/:_id'
+          element={
+            <PrivateRoute>
+              <ItitneraryPage />
             </PrivateRoute>
           }
         />

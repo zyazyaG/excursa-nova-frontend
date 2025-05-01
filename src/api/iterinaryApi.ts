@@ -19,36 +19,21 @@ export async function generateIterinary(preferences:TravelPreferences) {
 };
 
 
-export async function saveStoredItinerary(pendingItinerary: string, pendingPreferences: TravelPreferences,  token: string) {
-    const payload = {...pendingPreferences, content: pendingItinerary};
-    const response = await fetch("http://localhost:3600/api/itineraries/", {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload)
-    });
-
-    if (!response.ok) {
-        throw new Error ("Failed to save the itinerary!");
-    }
-    return await response.json();
-
-};
-
-// export async function getAllItineraries(token: string) {
+// export async function saveStoredItinerary(pendingItinerary: string, pendingPreferences: TravelPreferences,  token: string) {
+//     const payload = {...pendingPreferences, content: pendingItinerary};
 //     const response = await fetch("http://localhost:3600/api/itineraries/", {
-//         method: "GET",
+//         method: "POST",
 //         headers: {
 //             "Authorization": `Bearer ${token}`,
-//             "Content-Type": "appliction/json"
-//         }
+//             "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(payload)
 //     });
 
 //     if (!response.ok) {
-//         throw new Error("Failed to fetch all itineraries!")
+//         throw new Error ("Failed to save the itinerary!");
 //     }
-//     const data: Itinerary [] = await response.json();
-//     return data;
-// }
+//     return await response.json();
+
+// };
+

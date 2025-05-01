@@ -4,7 +4,7 @@ import ItineraryCard from "../../components/Card/ItineraryCard";
 import { FilterObject, Itinerary } from "../../types/itinerary";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useAxios } from "../../hooks/useAxios";
-import styles from "./Ititneraries.module.css";
+import styles from "./Itineraries.module.css";
 import Button from "../../components/Button/Button";
 import Sidebar from "../../components/Sidebar/Sidebar";
 
@@ -19,7 +19,7 @@ export default function Itineraries() {
         searchString: "",
         destination: [],
         date: [],
-        sort: ""
+        sort: "desc"
     });
 
     useEffect(() => {
@@ -61,8 +61,7 @@ export default function Itineraries() {
             } else {
                 return dateA - dateB;
             }
-            return 0;
-        })
+        });
 
     }
 

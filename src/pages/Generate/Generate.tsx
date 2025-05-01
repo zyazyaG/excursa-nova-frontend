@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { TravelPreferences } from "../../types/travel-preferences";
-import { generateIterinary, saveStoredItinerary } from "../../api/iterinaryApi";
+import { generateIterinary  } from "../../api/iterinaryApi";
 import MarkdownOutput from "../../components/MarkdownOutput/MarkdownOutput";
 import TravelForm from "../../components/TravelForm/TravelForm";
 import Button from "../../components/Button/Button";

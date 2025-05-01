@@ -7,9 +7,10 @@ interface AuthFormProps {
     type: "signup" | "signin";
     onSubmit: (formData: AuthFormData) => void;
     error?: string|null;
+    loading: boolean;
 }
 
-export default function AuthForm({ type, onSubmit, error }: AuthFormProps) {
+export default function AuthForm({ type, onSubmit, error, loading }: AuthFormProps) {
     const [formData, setFormData] = useState<AuthFormData>({
         email: "",
         password: "",
@@ -63,7 +64,7 @@ export default function AuthForm({ type, onSubmit, error }: AuthFormProps) {
                 }
 
                 {error  && <p>{error}</p>}
-                <Button variant="primary" type="submit" style={{ marginTop: "15px", width: "200px", height: "40px" }}>{type === "signup" ? "Create Account" : "Sing In"}</Button>
+                <Button variant="primary" type="submit" style={{ marginTop: "15px", width: "200px", height: "40px" }} disabled={loading}>{type === "signup" ? "Create Account" : "Sing In"}</Button>
             </div>
         </form>
     );

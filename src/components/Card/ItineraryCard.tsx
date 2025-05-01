@@ -6,15 +6,17 @@ import {
     CardMedia,
     Typography,
   } from '@mui/material';
-  import { Itinerary } from '../../types/itinerary';
-  import MarkdownOutput from '../MarkdownOutput/MarkdownOutput';
+import { Itinerary } from '../../types/itinerary';
 import { formatDate } from '../../utils';
+import { useNavigate } from 'react-router';
+
   
   type Props = {
     itinerary: Itinerary;
   };
   
   export default function ItineraryCard({ itinerary }: Props) {
+    const navigator = useNavigate();
     
     return (
         <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -36,7 +38,7 @@ import { formatDate } from '../../utils';
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small" onClick={() => {}}>
+                <Button size="small" onClick={() => navigator(`/itineraries/${itinerary._id}`)}>
                     View
                 </Button>
             </CardActions>

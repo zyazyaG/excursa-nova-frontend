@@ -4,27 +4,30 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { AuthFormData } from "../../types/auth";
-import { saveStoredItinerary } from "../../api/iterinaryApi";
-import { TravelPreferences } from "../../types/travel-preferences";
 import styles from "./SignUp.module.css";
 import Button from "../../components/Button/Button";
+import { useAxios } from "../../hooks/useAxios";
 
 export default function SignUpPage() {
   const { setUser, setToken } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>();
+  const axiosPrivate = useAxios();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (formData: AuthFormData) => {
     const pendingItinerary = localStorage.getItem("pendingItinerary");
     const pendingPreferences = localStorage.getItem("pendingPreferences");
+    const controller = new AbortController();
     try {
+      setLoading(true);
       const response = await authApi(formData, "signup");
-      // const response = await signUpApi(formData.email, formData.password);
       if (response) {
         setUser(response.user);
         setToken(response.token);
         if (pendingItinerary && pendingPreferences) {
-          await saveStoredItinerary(pendingItinerary, JSON.parse(pendingPreferences) as TravelPreferences, response.token);
+          const payload = {pendingPreferences, content: pendingItinerary};
+          await axiosPrivate.post("/itineraries", payload, {signal: controller.signal});
           localStorage.removeItem("pendingItinerary");
           localStorage.removeItem("pendingPreferences");
         }
@@ -32,7 +35,11 @@ export default function SignUpPage() {
       }
     } catch (err: any) {
       setError(err.message || "Signup failed.");
+    } finally {
+      controller.abort();
+      setLoading(false);
     }
+    
   };
 
   return (
@@ -42,7 +49,7 @@ export default function SignUpPage() {
         <p>Let's plan your next adventure together</p>
       </div>
       <div className={styles.authForm}>
-        <AuthForm type="signup" onSubmit={handleSubmit} error={error} />
+        <AuthForm type="signup" onSubmit={handleSubmit} error={error} loading={loading}/>
       </div> 
 
       <div className={styles.signIn}>

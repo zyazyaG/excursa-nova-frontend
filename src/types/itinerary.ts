@@ -6,6 +6,7 @@ export interface Itinerary {
     startDate?: Date;
     endDate?: Date;
     createdAt: string;
+    style: string [];
     imgURL: string[];
 }
 
@@ -13,6 +14,6 @@ export interface FilterObject {
     searchString: string;
     destination: string[],
     date: string[],
-    sort: string;
+    sort: "desc" | "acs";
 
 }
