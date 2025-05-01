@@ -34,7 +34,7 @@ export const AuthProvider = ({children} : {children:ReactNode}) => {
         } finally {
             setUser(null);
             setToken(null);
-            window.location.href = "/sign-in";
+            window.location.href = "/";
         }
     };
 

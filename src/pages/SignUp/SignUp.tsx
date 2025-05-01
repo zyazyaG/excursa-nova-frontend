@@ -6,40 +6,34 @@ import { useAuth } from "../../hooks/useAuth";
 import { AuthFormData } from "../../types/auth";
 import styles from "./SignUp.module.css";
 import Button from "../../components/Button/Button";
-import { useAxios } from "../../hooks/useAxios";
+import { useHandlePendingItinerary } from "../../hooks/useHandlePending";
 
 export default function SignUpPage() {
   const { setUser, setToken } = useAuth();
   const navigate = useNavigate();
-  const [error, setError] = useState<string | null>();
-  const axiosPrivate = useAxios();
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const { handle: handlePendingItinerary } = useHandlePendingItinerary();
+
   const handleSubmit = async (formData: AuthFormData) => {
-    const pendingItinerary = localStorage.getItem("pendingItinerary");
-    const pendingPreferences = localStorage.getItem("pendingPreferences");
-    const controller = new AbortController();
     try {
       setLoading(true);
       const response = await authApi(formData, "signup");
+
       if (response) {
         setUser(response.user);
         setToken(response.token);
-        if (pendingItinerary && pendingPreferences) {
-          const payload = {pendingPreferences, content: pendingItinerary};
-          await axiosPrivate.post("/itineraries", payload, {signal: controller.signal});
-          localStorage.removeItem("pendingItinerary");
-          localStorage.removeItem("pendingPreferences");
-        }
+
+        await handlePendingItinerary(response.token);
+
         navigate("/dashboard");
       }
     } catch (err: any) {
       setError(err.message || "Signup failed.");
     } finally {
-      controller.abort();
       setLoading(false);
     }
-    
   };
 
   return (
@@ -49,12 +43,27 @@ export default function SignUpPage() {
         <p>Let's plan your next adventure together</p>
       </div>
       <div className={styles.authForm}>
-        <AuthForm type="signup" onSubmit={handleSubmit} error={error} loading={loading}/>
-      </div> 
+        <AuthForm
+          type="signup"
+          onSubmit={handleSubmit}
+          error={error}
+          loading={loading}
+        />
+      </div>
 
       <div className={styles.signIn}>
         <h4>Signed up already? Let's log you in!</h4>
-        <Button variant="secondary" style={{ marginTop: "15px", width: "200px", height: "40px" }} onClick={() => navigate("/sign-in")}>Sign In</Button>
+        <Button
+          variant="secondary"
+          style={{
+            marginTop: "15px",
+            width: "200px",
+            height: "40px",
+          }}
+          onClick={() => navigate("/sign-in")}
+        >
+          Sign In
+        </Button>
       </div>
     </div>
   );

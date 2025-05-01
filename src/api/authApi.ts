@@ -26,20 +26,6 @@ export async function authApi(data: { email: string; password: string; name?: st
   }
 }
 
-// export const signInApi = async (email: string, password: string) => {
-//   const response = await api.post("/auth/sign-in", { email, password});
-//   const user:AuthResponse = await response.data;
-//   return user;
-
-// }
-
-// export const signUpApi = async (email: string, password: string) => {
-//   const response = await api.post("/auth/sign-up", { email, password, name});
-//   const user:AuthResponse = await response.data;
-//   return user;
-
-// }
-
 export async function refreshToken() {
   const res = await fetch("http://localhost:3600/api/auth/refresh", {
     method: "POST",
