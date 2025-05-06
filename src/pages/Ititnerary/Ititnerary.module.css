@@ -5,11 +5,13 @@
     width: 100%;
     height: 100%;
     background-color: #b23850;
+    position: relative; /* Needed for children to position properly */
 }
 
 .itinerary {
     width: 100%;
     height: 100%;
+    position: relative;
 }
 
 .image {
@@ -25,8 +27,8 @@
 }
 
 .inner {
-    top: 0;
     position: absolute;
+    top: 0;
     display: flex;
     justify-content: flex-end;
     width: 100%;
@@ -39,7 +41,6 @@
 }
 
 .back {
-    /* font-size: 24px; */
     color: white;
 }
 
@@ -50,34 +51,69 @@
     min-height: 500px;
     border-radius: 2rem;
     background-color: #b23850;
-    /* overflow-y: scroll; */
     padding: 2rem;
     color: white;
+    display: flex;
+    flex-direction: column;
 }
 
 .header {
     width: 100%;
-    height: 10%;
     border-bottom: 1px solid white;
 }
 
-.date {
-    width: 100%;
-    margin: 0.5rem 0 0.5rem 0;
+.header h2 {
+    margin: 0;
+}
+
+.subHeader {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.date {
+    display: flex;
+    align-items: center;
 }
 
 .style {
     background-color: #F4C10E;
-    padding: 3px 5px 3px 5px;
+    padding: 3px 5px;
     border-radius: 3px;
+    margin-left: 5px;
 }
 
 .content {
-    width: 100%;
-    height: 90%;
-    overflow-y: scroll; 
+    flex: 1; /* Take up remaining space */
+    overflow-y: auto;
+    margin-top: 1rem;
 }
 
+/* Print styles */
+@media print {
+    body {
+        margin: 0;
+    }
+
+    .left, .back, button, svg {
+        display: none !important;
+    }
+
+    .right {
+        width: 100% !important;
+        height: auto !important;
+        border-radius: 0;
+        background-color: white;
+        color: black;
+    }
+
+    .right * {
+        color: black !important;
+    }
+
+    .image {
+        display: none;
+    }
+}
