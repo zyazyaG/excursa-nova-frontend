@@ -2,7 +2,7 @@ export interface TravelPreferences {
     destination: string;
     startDate: Date;
     endDate: Date;
-    budget?: number;
+    budget?: string;
     style?: string[];
     cities: string [];
 }

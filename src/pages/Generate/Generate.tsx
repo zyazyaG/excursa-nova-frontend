@@ -10,26 +10,30 @@ import { useAxios } from "../../hooks/useAxios";
 import styles from "./Generate.module.css";
 
 export default function Generate() {
-  const [itinerary, setItinerary] = useState("");
-  const [data, setData] = useState<TravelPreferences>();
+  const [itinerary, setItinerary] = useState<string>("");
+  const [data, setData] = useState<TravelPreferences | null>(null);
   const [generating, setGenerating] = useState(false); 
   const [saving, setSaving] = useState(false); 
   const navigator = useNavigate();
   const { user } = useAuth();
   const axiosPrivate = useAxios();
 
-  const handleClick = async () => {
+  const handleSave = async () => {
     if (!data || !itinerary) return;
 
-    const payload = { ...data, content: itinerary };
+    const payload = {
+      ...data,
+      content: itinerary
+    };
 
     try {
       setSaving(true);
       const response = await axiosPrivate.post("/itineraries", payload);
       console.log("Saved:", response.data);
 
-      localStorage.removeItem("pendingItinerary");
-      localStorage.removeItem("pendingPreferences");
+      sessionStorage.removeItem("travelApp_pendingItinerary");
+      sessionStorage.removeItem("travelApp_pendingPreferences");
+
     } catch (error) {
       console.error("Failed to save itinerary:", error);
     } finally {
@@ -41,15 +45,13 @@ export default function Generate() {
     try {
       setGenerating(true);
 
-      const tempData = { ...formData };
+      const destinationWithCities = formData.cities.length ? `${formData.destination}: ${formData.cities.join(", ")}` : formData.destination;
+      const finalData = {...formData, destination: destinationWithCities};
 
-      if (tempData.cities.length) {
-        tempData.destination +=": " + tempData.cities.join(", ");
-      }
-
-      const newItinerary = await generateIterinary(tempData);
+      const newItinerary = await generateIterinary(finalData);
       setItinerary(newItinerary);
-      setData(tempData);
+      setData(finalData);
+
     } catch (error) {
       console.error("Itinerary generation failed:", error);
     } finally {
@@ -59,9 +61,9 @@ export default function Generate() {
 
   useEffect(() => {
     if (itinerary && data) {
-      localStorage.setItem("pendingItinerary", itinerary);
-      localStorage.setItem(
-        "pendingPreferences",
+      sessionStorage.setItem("travelApp_pendingItinerary", itinerary);
+      sessionStorage.setItem(
+        "travelApp_pendingPreferences",
         JSON.stringify(data)
       );
     }
@@ -87,8 +89,16 @@ export default function Generate() {
                 Then don't forget to Save it!
               </h4>
               {user 
-              ? (<Button variant="primary" onClick={handleClick} style={{ height: "40px" }} disabled={saving}>{saving ? "Saving..." : "Save Itinerary"}</Button>) 
-              : (<Button variant="primary" onClick={() => navigator("/sign-up")} style={{ height: "40px" }}>Sign Up</Button>)
+                ? (
+                  <Button variant="primary" onClick={handleSave} disabled={saving} className={styles.saveButton}>
+                    {saving ? "Saving..." : "Save Itinerary"}
+                  </Button>
+                ) 
+                : (
+                  <Button variant="primary" onClick={() => navigator("/sign-up")} className={styles.saveButton}>
+                    Sign Up
+                  </Button>
+                )
               }
             </div>
             <div className={styles.markdown}>

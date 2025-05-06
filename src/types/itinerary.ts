@@ -8,6 +8,7 @@ export interface Itinerary {
     createdAt: string;
     style: string [];
     imgURL: string[];
+    budget: string;
 }
 
 export interface FilterObject {

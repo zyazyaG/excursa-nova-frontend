@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import { TravelPreferences } from "../../types/travel-preferences";
 import Button from "../Button/Button";
 import stylesCSS from "./TravelForm.module.css";
-
-import { TextField, Checkbox, Autocomplete, InputAdornment } from "@mui/material";
+import {TextField, Autocomplete, Select, FormControl, InputLabel, MenuItem} from "@mui/material";
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from "dayjs";
@@ -19,51 +18,59 @@ const styleOptions: OptionType[] = [
   { value: "cultural", label: "cultural" },
 ];
 
+const budgetOptions: OptionType[] = [
+  { value: "<1000", label: "Under $1,000" },
+  { value: "1000 - 2500", label: "$1,000 - $2,500" },
+  { value: "2500 - 5000", label: "$2,500 - $5,000" },
+  { value: "5000 - 10000", label: "$5,000 - $10,000" },
+  { value: "10000 - 20000", label: "$10,000 - $20,000" },
+  { value: "20000+", label: "Over $20,000" },
+];
+
 type Props = {
   onSubmit: (data: TravelPreferences) => void;
   loading: boolean;
 };
 
 export default function TravelForm({ onSubmit, loading }: Props) {
-  const { control, handleSubmit, setValue, formState: { errors }, watch  } = useForm<TravelPreferences>({mode: "onChange", shouldUnregister: false});
+  const { control, handleSubmit, formState: { errors }, watch } = useForm<TravelPreferences>({
+    mode: "onChange",
+    defaultValues: {
+      style: [],
+      cities: [],
+      budget: "",
+    }
+  });
 
   const [countries, setCountries] = useState<OptionType[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
-  const [showCitiesCheckmark, setShowCitiesCheckmark] = useState(false);
-  const [showCitiesDropdown, setShowCitiesDropdown] = useState(false);
   const [regions, setRegions] = useState<OptionType[]>([]);
 
+  // Load countries
   useEffect(() => {
-    const countryOptions: OptionType[] = countryRegionData.map((c) => ({
+    const countryOptions = countryRegionData.map(c => ({
       value: c.countryName,
       label: c.countryName
     }));
     setCountries(countryOptions);
   }, []);
 
+  // Update regions when country changes
   useEffect(() => {
-    const regionsList: OptionType[] = countryRegionData
-      .find((c) => c.countryName === selectedCountry)
-      ?.regions.map((r) => ({
-        value: r.name,
-        label: r.name
-      })) || [];
-    setRegions(regionsList);
+    const foundCountry = countryRegionData.find(c => c.countryName === selectedCountry);
+    const regionOptions = foundCountry
+      ? foundCountry.regions.map(r => ({ value: r.name, label: r.name }))
+      : [];
+    setRegions(regionOptions);
   }, [selectedCountry]);
 
-
-
-  const handleFormSubmit = (data: any) => {
-    const selectedStyles = (data.style || []).map((s: OptionType) => s.value);
-    const selectedCities = (data.cities || []).map((c: OptionType) => c.value);
-
-    const payload: TravelPreferences = {
+  const handleFormSubmit = (data: TravelPreferences) => {
+    onSubmit({
       ...data,
-      style: selectedStyles,
-      cities: selectedCities,
-    };
-
-    onSubmit(payload);
+      cities: data.cities || [],
+      style: data.style || [],
+      budget: data.budget || "",
+    });
   };
 
   return (
@@ -73,16 +80,16 @@ export default function TravelForm({ onSubmit, loading }: Props) {
         <Controller
           name="destination"
           control={control}
+          rules={{ required: "Destination is required" }}
           render={({ field }) => (
             <Autocomplete
               sx={{ my: 2 }}
               options={countries}
               getOptionLabel={(option) => option.label}
               onChange={(_, value) => {
-                field.onChange(value?.value || "");
-                setSelectedCountry(value?.value || null);
-                setShowCitiesCheckmark(!!value?.value);
-                setShowCitiesDropdown(false);
+                const val = value?.value || "";
+                field.onChange(val);
+                setSelectedCountry(val);
               }}
               renderInput={(params) => (
                 <TextField
@@ -90,52 +97,34 @@ export default function TravelForm({ onSubmit, loading }: Props) {
                   label="Destination"
                   variant="outlined"
                   fullWidth
+                  error={!!errors.destination}
+                  helperText={errors.destination?.message}
                 />
               )}
             />
           )}
         />
 
-        {showCitiesCheckmark && (
-          <div className={stylesCSS.checkmark}>
-            <label className={stylesCSS.label}>
-              Do you want to specify the cities?
-            </label>
-            <Checkbox
-              onChange={(e) => {
-                const checked = e.target.checked;
-                setShowCitiesDropdown(checked);
-                if (!checked) {
-                  setValue("cities", []);
-                }
-              }}
-              checked={showCitiesDropdown}
+        {selectedCountry && (
+          <>
+            <label className={stylesCSS.label}>Do you want to specify the cities?</label>
+            <Controller
+              name="cities"
+              control={control}
+              render={({ field }) => (
+                <Autocomplete
+                  multiple
+                  sx={{ my: 2 }}
+                  options={regions}
+                  getOptionLabel={(option) => option.label}
+                  onChange={(_, value) => field.onChange(value.map(v => v.value))}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Cities" variant="outlined" fullWidth />
+                  )}
+                />
+              )}
             />
-          </div>
-        )}
-
-        {showCitiesDropdown && (
-          <Controller
-            name="cities"
-            control={control}
-            render={({ field }) => (
-              <Autocomplete
-                sx={{ my: 2 }}
-                multiple
-                options={regions}
-                getOptionLabel={(option) => option.label}
-                onChange={(_, value) => field.onChange(value)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Cities"
-                    variant="outlined"
-                    fullWidth
-                  />
-                )}
-              />
-            )}
-          />
+          </>
         )}
 
         <Controller
@@ -143,23 +132,23 @@ export default function TravelForm({ onSubmit, loading }: Props) {
           control={control}
           rules={{
             required: "Start date is required",
-            validate: (value) =>
-              dayjs(value).isBefore(dayjs(), "day")
+            validate: value =>
+              value && dayjs(value).isBefore(dayjs(), "day")
                 ? "Start date cannot be in the past"
-                : true,
+                : true
           }}
           render={({ field }) => (
             <DatePicker
               sx={{ my: 2 }}
               label="Start Date"
               value={field.value ? dayjs(field.value) : null}
-              onChange={(date) => field.onChange(date?.toISOString())}
+              onChange={(date) => field.onChange(date?.toISOString() || "")}
               slotProps={{
                 textField: {
                   fullWidth: true,
                   error: !!errors.startDate,
-                  helperText: errors.startDate?.message,
-                },
+                  helperText: errors.startDate?.message
+                }
               }}
             />
           )}
@@ -170,26 +159,27 @@ export default function TravelForm({ onSubmit, loading }: Props) {
           control={control}
           rules={{
             required: "End date is required",
-            validate: (value) => {
+            validate: value => {
               const start = dayjs(watch("startDate"));
               const end = dayjs(value);
-              return end.isBefore(start, "day")
-                ? "End date must be after start date"
-                : true;
-            },
+              if (end.isBefore(start, "day")) {
+                return "End date must be after start date";
+              }
+              return true;
+            }
           }}
           render={({ field }) => (
             <DatePicker
               sx={{ my: 2 }}
               label="End Date"
               value={field.value ? dayjs(field.value) : null}
-              onChange={(date) => field.onChange(date?.toISOString())}
+              onChange={(date) => field.onChange(date?.toISOString() || "")}
               slotProps={{
                 textField: {
                   fullWidth: true,
                   error: !!errors.endDate,
-                  helperText: errors.endDate?.message,
-                },
+                  helperText: errors.endDate?.message
+                }
               }}
             />
           )}
@@ -198,26 +188,22 @@ export default function TravelForm({ onSubmit, loading }: Props) {
         <Controller
           name="budget"
           control={control}
-          rules={{
-            required: "Budget is required",
-            min: { value: 1, message: "Budget must be greater than 0" },
-          }}
+          rules={{ required: "Budget is required" }}
           render={({ field }) => (
-            <TextField
-              {...field}
-              type="number"
-              label="Budget"
-              fullWidth
-              variant="outlined"
-              sx={{ my: 2 }}
-              error={!!errors.budget}
-              helperText={errors.budget?.message}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">$</InputAdornment>
-                ),
-              }}
-            />
+            <FormControl fullWidth sx={{ my: 2 }} error={!!errors.budget}>
+              <InputLabel>Budget</InputLabel>
+              <Select
+                label="Budget"
+                value={field.value || ""}
+                onChange={(e) => field.onChange(e.target.value)}
+              >
+                {budgetOptions.map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           )}
         />
 
@@ -230,20 +216,22 @@ export default function TravelForm({ onSubmit, loading }: Props) {
               multiple
               options={styleOptions}
               getOptionLabel={(option) => option.label}
-              onChange={(_, value) => field.onChange(value)}
+              onChange={(_, value) => field.onChange(value.map(v => v.value))}
               renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Style"
-                  variant="outlined"
-                  fullWidth
-                />
+                <TextField {...params} label="Style" variant="outlined" fullWidth />
               )}
             />
           )}
         />
 
-        <Button type="submit" variant="primary" disabled={loading} style={{ marginTop: "15px", height: "40px" }}>{loading? "Generating..." : "Generate"}</Button>
+        <Button
+          type="submit"
+          variant="primary"
+          disabled={loading}
+          style={{ marginTop: "15px", height: "40px" }}
+        >
+          {loading ? "Generating..." : "Generate"}
+        </Button>
       </form>
     </LocalizationProvider>
   );

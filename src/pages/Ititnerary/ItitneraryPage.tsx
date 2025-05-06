@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Itinerary } from "../../types/itinerary"
 import styles from "./Ititnerary.module.css";
 import { useEffect, useState } from "react";
@@ -12,6 +12,7 @@ export const ItitneraryPage = ()  => {
     const {_id} = useParams();
     const [itinerary, setItinerary] = useState<Itinerary>();
     const axiosPrivate = useAxios();
+    const navigator = useNavigate();
 
     useEffect(() => {
         let isMounted = true;
@@ -41,7 +42,7 @@ export const ItitneraryPage = ()  => {
             
                 <div className={styles.inner}>
                     <div className={styles.left}>
-                        <div className={styles.back}>←</div>
+                        <div className={styles.back}><Button onClick={() => navigator(-1)}>←</Button></div>
                     </div>
                     <div className={styles.right}>
                         <div className={styles.header}>

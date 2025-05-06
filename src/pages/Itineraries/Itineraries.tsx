@@ -1,8 +1,8 @@
-import { Box, Paper, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import  Grid  from "@mui/material/Grid";
 import ItineraryCard from "../../components/Card/ItineraryCard";
 import { FilterObject, Itinerary } from "../../types/itinerary";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useAxios } from "../../hooks/useAxios";
 import styles from "./Itineraries.module.css";
 import Button from "../../components/Button/Button";
@@ -22,30 +22,44 @@ export default function Itineraries() {
         sort: "desc"
     });
 
-    useEffect(() => {
-        let isMounted = true;
+
+    const fetchItineraries = useCallback(() => {
         const controller = new AbortController();
 
-        const getAllItineraries = async() => {
-            try {
-                const response = await axiosPrivate.get("/itineraries", {signal: controller.signal});
-                isMounted && setItineraries(response.data)
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        getAllItineraries();
+        axiosPrivate
+            .get("/itineraries", { signal: controller.signal })
+            .then((response) => {
+                setItineraries(response.data || []);
+            })
+            .catch((error) => {
+                if (error.name !== "CanceledError") {
+                    console.error("Failed to fetch itineraries:", error);
+                }
+            });
 
         return () => {
-            isMounted = false;
             controller.abort();
-        }
-    }, []);
+        };
+    }, [axiosPrivate]);
+
+    useEffect(() => {
+        const abort = fetchItineraries();
+        return abort;
+    }, [fetchItineraries]);
+
+    const handleNameUpdate = (_id: string, updatedName: string) => {
+        axiosPrivate
+            .patch(`/itineraries/${_id}`, { name: updatedName })
+            .then(() => {
+                fetchItineraries();
+            })
+            .catch(console.error);
+    };
 
     useEffect(() => {
         const data = sortAndFilterItineraries(filters);
         setFilteredItineraries(data);
-    }, [itineraries, filters])
+    }, [itineraries, filters]);
 
     const sortAndFilterItineraries = (filterObj: FilterObject) => {
         return itineraries.filter(itinerary => {
@@ -97,7 +111,7 @@ export default function Itineraries() {
                             <Grid container spacing={2}>
                                 {filteredItitneraries!.map(itinerary => (
                                     <Grid size={3} key={itinerary._id}>
-                                        <ItineraryCard itinerary={itinerary}/>
+                                        <ItineraryCard itinerary={itinerary} onNameUpdate={handleNameUpdate}/>
                                     </Grid>
                                 ))}
                             </Grid>

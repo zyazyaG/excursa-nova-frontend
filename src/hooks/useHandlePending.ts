@@ -4,8 +4,8 @@ export const useHandlePendingItinerary = () => {
     const axiosPrivate = useAxios();
 
     const handle = async (token: string) => {
-        const pendingItinerary = localStorage.getItem("pendingItinerary");
-        const pendingPreferences = localStorage.getItem("pendingPreferences");
+        const pendingItinerary = sessionStorage.getItem("travelApp_pendingItinerary");
+        const pendingPreferences = sessionStorage.getItem("travelApp_pendingPreferences");
 
         let preferences = null;
         try {
@@ -22,8 +22,8 @@ export const useHandlePendingItinerary = () => {
                 },
             });
 
-            localStorage.removeItem("pendingItinerary");
-            localStorage.removeItem("pendingPreferences");
+            sessionStorage.removeItem("travelApp_pendingItinerary");
+            sessionStorage.removeItem("travelApp_pendingPreferences");
         }
     };
 
