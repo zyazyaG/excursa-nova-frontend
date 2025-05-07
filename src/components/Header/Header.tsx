@@ -28,7 +28,7 @@ export default function Header() {
         <div className={`${styles.header} ${scrolled ? styles.scrolled : ""}`}>
             <div className={styles.headerInner}>
                 <div className={styles.logo}>
-                    {user ? <Link to="/dashboard">Logo</Link> : <Link to="/">Logo</Link>}
+                    {user ? <Link to="/dashboard">Logo</Link> : <Link to="/">Excursa Nova</Link>}
                 </div>
                 <nav className={styles.nav}>
                     {token ? (
