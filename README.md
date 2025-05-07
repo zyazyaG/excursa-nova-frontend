@@ -77,19 +77,22 @@ npm install
 # Run development server
 npm run dev
 
+```
 
-📝 Roadmap
-✅ Core authentication & refresh token flow
-✅ AI-based itinerary generation
-✅ Itinerary save/edit/delete
-✅ Responsive dashboard & history
-✅ Markdown output for itineraries
+### 📝 Roadmap
 
-Upcoming:
+  - Core authentication & refresh token flow
+  - AI-based itinerary generation.
+  - Itinerary save/edit/delete
+  - Responsive dashboard & history
+  - Markdown output for itineraries
+
+### Upcoming:
 
 🧠 Improved AI prompts & itinerary formats
 
-🤝 Final Note
+## 🤝 Final Note
+
 At this time, this project is under active solo development.
 However, feedback, dev and feature suggestions are always welcome!
 
