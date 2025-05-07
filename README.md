@@ -47,8 +47,9 @@ The frontend of the app is built using **React 19**, **TypeScript**, **Vite**, *
 ---
 
 ## 📁 Project Structure
-
+```
 src/
+
 ├── api/ # Axios setup & API service layer
 ├── assets/ # Static assets
 ├── components/ # Reusable UI components
@@ -60,7 +61,7 @@ src/
 ├── App.tsx
 ├── main.tsx
 
-
+```
 ---
 
 ## 🛠 Installation & Development
