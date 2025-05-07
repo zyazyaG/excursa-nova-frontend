@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Itinerary } from "../../types/itinerary"
-import styles from "./Ititnerary.module.css";
+import styles from "./Itinerary.module.css";
 import { useEffect, useRef, useState } from "react";
 import { useAxios } from "../../hooks/useAxios";
 import MarkdownOutput from "../../components/MarkdownOutput/MarkdownOutput";
@@ -9,7 +9,7 @@ import Button from "../../components/Button/Button";
 import { FaPrint } from "react-icons/fa";
 
 
-export const ItitneraryPage = ()  => {
+export const ItineraryPage = ()  => {
     const {_id} = useParams();
     const [itinerary, setItinerary] = useState<Itinerary>();
     const axiosPrivate = useAxios();

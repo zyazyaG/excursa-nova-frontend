@@ -1,6 +1,7 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
 import { User } from "../types/user";
 import { axiosBasic } from "../api/axios";
+import { useNavigate } from "react-router";
 
 
 interface AuthContextType {
@@ -19,6 +20,7 @@ export const AuthProvider = ({children} : {children:ReactNode}) => {
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     const signOut = async () => {
         try {
@@ -34,7 +36,7 @@ export const AuthProvider = ({children} : {children:ReactNode}) => {
         } finally {
             setUser(null);
             setToken(null);
-            window.location.href = "/";
+            navigate("/");
         }
     };
 

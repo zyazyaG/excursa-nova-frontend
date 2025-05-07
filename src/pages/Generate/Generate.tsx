@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { TravelPreferences } from "../../types/travel-preferences";
-import { generateIterinary } from "../../api/iterinaryApi";
+import { generateItinerary } from "../../api/iterinaryApi";
 import MarkdownOutput from "../../components/MarkdownOutput/MarkdownOutput";
 import TravelForm from "../../components/TravelForm/TravelForm";
 import Button from "../../components/Button/Button";
@@ -48,7 +48,7 @@ export default function Generate() {
       const destinationWithCities = formData.cities.length ? `${formData.destination}: ${formData.cities.join(", ")}` : formData.destination;
       const finalData = {...formData, destination: destinationWithCities};
 
-      const newItinerary = await generateIterinary(finalData);
+      const newItinerary = await generateItinerary(finalData);
       setItinerary(newItinerary);
       setData(finalData);
 

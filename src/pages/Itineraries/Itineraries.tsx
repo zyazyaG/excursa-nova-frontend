@@ -11,7 +11,7 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 export default function Itineraries() {
 
     const [itineraries, setItineraries] = useState<Itinerary[] | []>([]);
-    const [filteredItitneraries, setFilteredItineraries] = useState<Itinerary[] | []>([]);
+    const [filteredItineraries, setFilteredItineraries] = useState<Itinerary[] | []>([]);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const axiosPrivate = useAxios();
 
@@ -109,7 +109,7 @@ export default function Itineraries() {
                     {itineraries?.length ? 
                         <Box sx={{flexGrow: 1}}>
                             <Grid container spacing={2}>
-                                {filteredItitneraries!.map(itinerary => (
+                                {filteredItineraries!.map(itinerary => (
                                     <Grid size={3} key={itinerary._id}>
                                         <ItineraryCard itinerary={itinerary} onNameUpdate={handleNameUpdate}/>
                                     </Grid>

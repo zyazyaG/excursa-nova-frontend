@@ -2,7 +2,7 @@ import { TravelPreferences } from "../types/travel-preferences";
 import { Itinerary } from "../types/itinerary";
 
 
-export async function generateIterinary(preferences:TravelPreferences) {
+export async function generateItinerary(preferences:TravelPreferences) {
     
     const response = await fetch("http://localhost:3600/api/itineraries/generate-itinerary", {
         method: "POST",

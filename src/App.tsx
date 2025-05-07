@@ -7,7 +7,7 @@ import Dashboard from './pages/Dashboard/Dashboard'
 import PrivateRoute from './components/PrivateRoute';
 import Header from './components/Header/Header';
 import Itineraries from './pages/Itineraries/Itineraries';
-import { ItitneraryPage } from './pages/Ititnerary/ItitneraryPage';
+import { ItineraryPage } from './pages/Itinerary/ItineraryPage';
 
 function App() {
   return (
@@ -38,7 +38,7 @@ function App() {
           path='/itineraries/:_id'
           element={
             <PrivateRoute>
-              <ItitneraryPage />
+              <ItineraryPage />
             </PrivateRoute>
           }
         />
